@@ -1,10 +1,10 @@
 class Patient
-  attr_accessor :name, :birthday, :id
+
+  attr_reader :name, :birthday, :id
 
   def initialize(attributes)
     @name = attributes[:name]
     @birthday = attributes[:birthday]
-    @id = attributes[:id]
   end
 
   def self.all

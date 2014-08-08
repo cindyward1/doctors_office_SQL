@@ -1,9 +1,9 @@
 class Specialty
-  attr_accessor :name, :id
+
+  attr_reader :name, :id
 
   def initialize (attributes)
     @name = attributes[:name]
-    @id = attributes[:id]
   end
 
   def self.all
@@ -18,7 +18,7 @@ class Specialty
   end
 
   def save
-    specialty = DB.exec("INSERT INTO specialty (name) VALUES ('#{name}') RETURNING id;")
+    specialty = DB.exec("INSERT INTO specialty (name) VALUES ('#{@name}') RETURNING id;")
     @id = specialty.first['id'].to_i
   end
 

@@ -1,5 +1,6 @@
 class Insurance
-  attr_accessor :name, :id
+
+  attr_reader :name, :id
 
   def initialize(attributes)
     @name = attributes[:name]
@@ -17,7 +18,7 @@ class Insurance
   end
 
   def save
-    insurance = DB.exec("INSERT INTO insurance (name) VALUES ('#{name}') RETURNING id;")
+    insurance = DB.exec("INSERT INTO insurance (name) VALUES ('#{@name}') RETURNING id;")
     @id = insurance.first['id'].to_i
   end
 

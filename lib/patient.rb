@@ -5,6 +5,7 @@ class Patient
   def initialize(attributes)
     @name = attributes[:name]
     @birthday = attributes[:birthday]
+    @id = attributes[:id]
   end
 
   def self.all
@@ -14,7 +15,7 @@ class Patient
       name = result['name']
       birthday = result['to_char']
       id = result['id'].to_i
-      patients << Patient.new({:name => name, :birthday => birthday, :id => id})
+      patients << Patient.new({:name => name, :birthday => birthday})
     end
     patients
   end
@@ -28,4 +29,30 @@ class Patient
   def ==(another_patient)
     self.name == another_patient.name && self.birthday == another_patient.birthday
   end
+
+ def self.choice(input_name)
+    results = DB.exec("SELECT id, name, TO_CHAR(birthday, 'MM/DD/YYYY') FROM patient "+
+                      "WHERE name = '#{input_name}';")
+    patients = []
+    results.each do |result|
+      name = result['name']
+      birthday = result['to_char']
+      id = result['id'].to_i
+      patients << Patient.new({:name => name, :birthday => birthday, :id => id})
+    end
+    patients
+  end
+
+  def delete
+    DB.exec("DELETE FROM patient WHERE id = '#{self.id}';")
+  end
+
+  def update_birthday(birthday)
+    DB.exec("UPDATE patient SET birthday = TO_DATE('#{birthday}', 'MM/DD/YYYY') WHERE id = '#{self.id}';")
+  end
+
+  def update_name(name)
+    DB.exec("UPDATE patient SET name = '#{name}' WHERE id = #{self.id};")
+  end
+
 end

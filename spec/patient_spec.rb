@@ -17,10 +17,42 @@ describe Patient do
     expect(Patient.all).to eq []
   end
 
-  it "saves an insurance company to the empty array" do
-    test_patient = Patient.new({:name=>"Kim Kardashian", :birthday=>"08/01/1983", :id=>1})
+  it "saves an patient to the empty array" do
+    test_patient = Patient.new({:name=>"Kim Kardashian", :birthday=>"08/01/1983"})
     test_patient.save
     expect(Patient.all).to eq [test_patient]
+  end
+
+  it "will choose and return a specific patient based on the patient's name" do
+    test_patient = Patient.new({:name=>"Kim Kardashian", :birthday=>"08/01/1983"})
+    test_patient.save
+    expect(Patient.choice("Kim Kardashian")).to eq [test_patient]
+  end
+
+  it "will delete a specific patient based on the patient's name" do
+    test_patient = Patient.new({:name=>"Kim Kardashian", :birthday=>"08/01/1983"})
+    test_patient.save
+    return_patient_array = Patient.choice("Kim Kardashian")
+    return_patient_array.first.delete
+    expect(Patient.all).to eq []
+  end
+
+  it "will change the birthday of a specific patient based on the patient's name" do
+    test_patient = Patient.new({:name=>"Kim Kardashian", :birthday=>"08/01/1983"})
+    test_patient.save
+    return_patient_array = Patient.choice("Kim Kardashian")
+    return_patient_array.first.update_birthday("10/19/1980")
+    return_patient_array1 = Patient.choice("Kim Kardashian")
+    expect(return_patient_array1.first.birthday).to eq "10/19/1980"
+  end
+
+  it "will change the name of a specific patient based on the patient's name" do
+    test_patient = Patient.new({:name=>"Kim Kardashian", :birthday=>"08/01/1983"})
+    test_patient.save
+    return_patient_array = Patient.choice("Kim Kardashian")
+    return_patient_array.first.update_name("Kim Kardashian West")
+    return_patient_array1 = Patient.choice("Kim Kardashian West")
+    expect(return_patient_array1.first.name).to eq "Kim Kardashian West"
   end
 
 end

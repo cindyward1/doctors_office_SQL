@@ -9,13 +9,13 @@ class Patient
   end
 
   def self.all
-    results = DB.exec("SELECT id, name, TO_CHAR(birthday, 'MM/DD/YYYY') FROM patient;")
+    results = DB.exec("SELECT id, name, TO_CHAR(birthday, 'MM/DD/YYYY') FROM patient ORDER BY id;")
     patients = []
     results.each do |result|
       name = result['name']
       birthday = result['to_char']
       id = result['id'].to_i
-      patients << Patient.new({:name => name, :birthday => birthday})
+      patients << Patient.new({:name => name, :birthday => birthday, :id => id})
     end
     patients
   end
@@ -30,9 +30,20 @@ class Patient
     self.name == another_patient.name && self.birthday == another_patient.birthday
   end
 
- def self.choice(input_name)
-    results = DB.exec("SELECT id, name, TO_CHAR(birthday, 'MM/DD/YYYY') FROM patient "+
-                      "WHERE name = '#{input_name}';")
+  def self.choice(input_name)
+    results = DB.exec("SELECT id, name, TO_CHAR(birthday, 'MM/DD/YYYY') FROM patient WHERE name = '#{input_name}';")
+    patients = []
+    results.each do |result|
+      name = result['name']
+      birthday = result['to_char']
+      id = result['id'].to_i
+      patients << Patient.new({:name => name, :birthday => birthday, :id => id})
+    end
+    patients
+  end
+
+  def self.choice_by_id(id)
+    results = DB.exec("SELECT id, name, TO_CHAR(birthday, 'MM/DD/YYYY') FROM patient WHERE id = #{id};")
     patients = []
     results.each do |result|
       name = result['name']

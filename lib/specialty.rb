@@ -38,6 +38,17 @@ class Specialty
     specialties
   end
 
+    def self.choice_by_id(id)
+    results = DB.exec("SELECT id, name FROM specialty WHERE id = #{id};")
+    specialty = []
+    results.each do |result|
+      name = result['name']
+      id = result['id'].to_i
+      specialty << Specialty.new({:name => name, :id => id})
+    end
+    specialty
+  end
+
   def delete
     DB.exec("DELETE FROM specialty WHERE id = #{self.id};")
   end

@@ -38,6 +38,17 @@ class Insurance
     insurances
   end
 
+  def self.choice_by_id(id)
+    results = DB.exec("SELECT * FROM insurance WHERE id = #{id};")
+    insurances = []
+    results.each do |result|
+      name = result['name']
+      id = result['id'].to_i
+      insurances << Insurance.new({:name => name, :id => id})
+    end
+    insurances
+  end
+
   def delete
     DB.exec("DELETE FROM insurance WHERE id = #{self.id};")
   end

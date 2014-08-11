@@ -47,6 +47,24 @@ class Doctor
     doctors
   end
 
+  def self.choice_by_id(id)
+      results = DB.exec("SELECT * FROM doctor WHERE id = #{id};")
+      doctors = []
+      results.each do |result|
+        name = result['name']
+        id = result['id'].to_i
+        specialty_id = result['specialty_id'].to_i
+        insurance_id = result['insurance_id'].to_i
+        doctors << Doctor.new({:name => name, :id => id, :specialty_id => specialty_id,
+                             :insurance_id => insurance_id})
+      end
+      doctors
+    end
+
+  def delete
+    DB.exec("DELETE FROM doctor WHERE id = #{self.id};")
+  end
+
   def update_name(input_name)
     DB.exec("UPDATE doctor SET name = '#{input_name}' WHERE id = #{self.id};")
   end

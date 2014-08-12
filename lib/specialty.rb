@@ -8,7 +8,7 @@ class Specialty
   end
 
   def self.all
-    results = DB.exec("SELECT * FROM specialty;")
+    results = DB.exec("SELECT * FROM specialty ORDER BY id;")
     specialties = []
     results.each do |result|
       name = result['name']
@@ -55,6 +55,17 @@ class Specialty
 
   def update_name(input_name)
     DB.exec("UPDATE specialty SET name = '#{input_name}' WHERE id = #{self.id};")
+  end
+
+  def list_doctors
+    results = DB.exec("SELECT name FROM doctor WHERE specialty_id = #{self.id}")
+    doctors = []
+    results.each do |result|
+      id = result['id'].to_s
+      name = result['name']
+      doctors << Doctor.new({:name=>name, :id=>id})
+    end
+    doctors
   end
 
 end

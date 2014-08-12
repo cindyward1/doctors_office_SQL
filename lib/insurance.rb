@@ -8,7 +8,7 @@ class Insurance
   end
 
   def self.all
-    results = DB.exec("SELECT * FROM insurance;")
+    results = DB.exec("SELECT * FROM insurance ORDER BY id;")
     insurances = []
     results.each do |result|
       name = result['name']
